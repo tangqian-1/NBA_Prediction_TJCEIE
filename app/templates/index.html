@@ -235,6 +235,58 @@
 
 {% block extra_js %}
 <script>
+// NBA球队ID映射（使用NBA官方CDN）
+const NBA_TEAM_ID_MAP = {
+    'ATL': '1610612737', // Atlanta Hawks
+    'BOS': '1610612738', // Boston Celtics
+    'BRK': '1610612751', // Brooklyn Nets
+    'CHI': '1610612741', // Chicago Bulls
+    'CHO': '1610612766', // Charlotte Hornets
+    'CLE': '1610612739', // Cleveland Cavaliers
+    'DAL': '1610612742', // Dallas Mavericks
+    'DEN': '1610612743', // Denver Nuggets
+    'DET': '1610612765', // Detroit Pistons
+    'GSW': '1610612744', // Golden State Warriors
+    'HOU': '1610612745', // Houston Rockets
+    'IND': '1610612754', // Indiana Pacers
+    'LAC': '1610612746', // Los Angeles Clippers
+    'LAL': '1610612747', // Los Angeles Lakers
+    'MEM': '1610612763', // Memphis Grizzlies
+    'MIA': '1610612748', // Miami Heat
+    'MIL': '1610612749', // Milwaukee Bucks
+    'MIN': '1610612750', // Minnesota Timberwolves
+    'NOP': '1610612740', // New Orleans Pelicans
+    'NYK': '1610612752', // New York Knicks
+    'OKC': '1610612760', // Oklahoma City Thunder
+    'ORL': '1610612753', // Orlando Magic
+    'PHI': '1610612755', // Philadelphia 76ers
+    'PHO': '1610612756', // Phoenix Suns
+    'POR': '1610612757', // Portland Trail Blazers
+    'SAC': '1610612758', // Sacramento Kings
+    'SAS': '1610612759', // San Antonio Spurs
+    'TOR': '1610612761', // Toronto Raptors
+    'UTA': '1610612762', // Utah Jazz
+    'WAS': '1610612764'  // Washington Wizards
+};
+
+// 获取球队ID
+function getTeamId(teamAbbr) {
+    const abbr = teamAbbr ? teamAbbr.toUpperCase() : '';
+    return NBA_TEAM_ID_MAP[abbr] || '';
+}
+
+// 生成球队图标URL（使用NBA官方CDN）
+function getTeamLogo(teamAbbr) {
+    const teamId = getTeamId(teamAbbr);
+    return teamId ? `https://cdn.nba.com/logos/nba/${teamId}/global/L/logo.svg` : '';
+}
+
+// 生成大尺寸球队图标URL（使用NBA官方CDN）
+function getTeamLogoLarge(teamAbbr) {
+    const teamId = getTeamId(teamAbbr);
+    return teamId ? `https://cdn.nba.com/logos/nba/${teamId}/global/L/logo.svg` : '';
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
     // 设置今日日期
     const today = new Date();
@@ -307,15 +359,21 @@ function renderTodayGames(games) {
                 </div>
                 <div class="game-teams">
                     <div class="game-team">
-                        <div class="game-team-logo" style="background: linear-gradient(135deg, #1D428A, #2E5BAA);">
-                            ${game.home_team}
+                        <div class="game-team-logo">
+                            <img src="${game.home_logo_url || getTeamLogo(game.home_team)}" 
+                                 alt="${game.home_team}" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='${game.home_team}';"
+                                 class="team-logo-img">
                         </div>
                         <div class="game-team-name">${game.home_team_name || game.home_team}</div>
                     </div>
                     <div class="game-vs">VS</div>
                     <div class="game-team">
-                        <div class="game-team-logo" style="background: linear-gradient(135deg, #F58426, #FF9F5A);">
-                            ${game.away_team}
+                        <div class="game-team-logo">
+                            <img src="${game.away_logo_url || getTeamLogo(game.away_team)}" 
+                                 alt="${game.away_team}" 
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='${game.away_team}';"
+                                 class="team-logo-img">
                         </div>
                         <div class="game-team-name">${game.away_team_name || game.away_team}</div>
                     </div>
@@ -402,8 +460,12 @@ function renderRankingTable(teams) {
                     </span>
                 </td>
                 <td>
-                    <span class="me-2" style="font-weight:bold;color:#1D428A;">${team.abbr}</span>
-                    ${team.name}
+                    <img src="${team.logo_url || getTeamLogo(team.abbr)}" 
+                         alt="${team.abbr}" 
+                         class="team-logo-sm me-2"
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\"font-weight:bold;color:#1D428A;\">${team.abbr}</span> ' + this.parentElement.innerHTML;">
+                    <span style="font-weight:bold;color:#1D428A;">${team.abbr}</span>
+                    <span class="text-secondary">${team.name_cn || team.name}</span>
                 </td>
                 <td class="text-center text-success">${team.wins || 0}</td>
                 <td class="text-center text-danger">${team.losses || 0}</td>

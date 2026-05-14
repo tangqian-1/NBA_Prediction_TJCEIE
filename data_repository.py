@@ -369,14 +369,23 @@ def get_today_games(date_str: Optional[str] = None) -> List[Dict]:
 
     records = []
     for row in day_logs.to_dict("records"):
+        home_abbr = row.get("team_abbr")
+        away_abbr = row.get("opponent_abbr")
+        
+        # 获取球队ID（使用NBA官方CDN）
+        home_team_id = TEAM_INFO.get(home_abbr.upper(), {}).get("id", "")
+        away_team_id = TEAM_INFO.get(away_abbr.upper(), {}).get("id", "")
+        
         records.append(
             {
                 "game_id": row.get("game_id"),
                 "game_date": row.get("game_date"),
-                "home_team": row.get("team_abbr"),
-                "home_team_name": row.get("team_name") or TEAM_INFO.get(row.get("team_abbr"), {}).get("name"),
-                "away_team": row.get("opponent_abbr"),
-                "away_team_name": row.get("opponent_name") or TEAM_INFO.get(row.get("opponent_abbr"), {}).get("name"),
+                "home_team": home_abbr,
+                "home_team_name": row.get("team_name") or TEAM_INFO.get(home_abbr, {}).get("name"),
+                "home_logo_url": f"https://cdn.nba.com/logos/nba/{home_team_id}/global/L/logo.svg" if home_team_id else "",
+                "away_team": away_abbr,
+                "away_team_name": row.get("opponent_name") or TEAM_INFO.get(away_abbr, {}).get("name"),
+                "away_logo_url": f"https://cdn.nba.com/logos/nba/{away_team_id}/global/L/logo.svg" if away_team_id else "",
             }
         )
     return records

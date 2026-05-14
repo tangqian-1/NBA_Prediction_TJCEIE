@@ -22,7 +22,7 @@ project_root = Path(__file__).parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from config import TEAM_INFO
+from config import TEAM_INFO, TEAM_LOGO_URL_TEMPLATE, TEAM_LOGO_URL_LARGE
 from data_repository import (
     get_available_seasons,
     get_dataset_counts,
@@ -141,6 +141,18 @@ def _build_team_rows_legacy(season: str | None) -> List[Dict[str, Any]]:
     return teams
 
 
+def _get_team_logo_url(team_abbr: str, size: str = 'normal') -> str:
+    """获取球队图标URL（使用NBA官方CDN）"""
+    abbr = team_abbr.upper()
+    if abbr in TEAM_INFO:
+        team_id = TEAM_INFO[abbr].get('id', '')
+        if team_id:
+            if size == 'large':
+                return TEAM_LOGO_URL_LARGE.format(team_id=team_id)
+            return TEAM_LOGO_URL_TEMPLATE.format(team_id=team_id)
+    return ''
+
+
 def _decorate_team_row(team: Dict[str, Any], rank: int | None = None) -> Dict[str, Any]:
     team = dict(team)
     abbr = normalize_team_abbr(team.get("abbr") or team.get("team_abbr") or "")
@@ -170,6 +182,11 @@ def _decorate_team_row(team: Dict[str, Any], rank: int | None = None) -> Dict[st
             "city": team.get("city") or info.get("city") or "",
             "conference_cn": conference_cn,
             "display_name": f"{abbr} - {name}" if abbr and name else name,
+            "name_cn": info.get("name_cn") or name,
+            "logo_url": _get_team_logo_url(abbr),
+            "logo_url_large": _get_team_logo_url(abbr, 'large'),
+            "primary_color": info.get("primary_color") or "#1D428A",
+            "secondary_color": info.get("secondary_color") or "#F58426",
         }
     )
 
