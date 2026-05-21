@@ -939,3 +939,180 @@ input[type="range"]::-moz-range-thumb {
     border: 1px solid var(--danger);
     border-radius: 12px;
 }
+
+/* ==================== 球队选择器 ==================== */
+.team-selector {
+    position: relative;
+    width: 100%;
+}
+
+.team-selector-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.team-selector-input:hover {
+    border-color: var(--nba-orange);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.team-selector-input:focus {
+    outline: none;
+    border-color: var(--nba-orange);
+    box-shadow: 0 0 0 3px rgba(245, 132, 38, 0.2);
+}
+
+.team-selector-input.has-value {
+    border-color: var(--nba-orange);
+    background: rgba(245, 132, 38, 0.1);
+}
+
+.team-placeholder {
+    color: var(--text-secondary);
+}
+
+.team-selector-input i {
+    color: var(--nba-orange);
+    font-size: 0.875rem;
+}
+
+.team-selector-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: rgba(11, 16, 38, 0.98);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.team-search-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.team-search-input::placeholder {
+    color: var(--text-secondary);
+}
+
+.team-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.team-option {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.team-option:last-child {
+    border-bottom: none;
+}
+
+.team-option:hover {
+    background: rgba(245, 132, 38, 0.15);
+}
+
+.team-option-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+.team-option-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-option-info {
+    flex: 1;
+}
+
+.team-option-name {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.team-option-city {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+.team-selected {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ==================== 球队预览卡片 ==================== */
+.team-preview-card {
+    text-align: center;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.team-preview-card .team-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.team-logo-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-preview-card .team-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.team-preview-card .team-city {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}

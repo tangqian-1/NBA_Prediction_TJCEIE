@@ -520,8 +520,7 @@ function renderTeamList(container, teams, position, onSelect) {
         return `
             <div class="team-option" data-abbr="${team.abbr}">
                 <div class="team-option-logo">
-                    <img src="${logoUrl}" alt="${team.abbr}" class="team-logo-option"
-                         onerror="this.style.display='none'; this.parentElement.innerHTML='${team.abbr}';">
+                    <img src="${logoUrl}" alt="${team.abbr}" class="team-logo-option">
                 </div>
                 <div class="team-option-info">
                     <div class="team-option-name">${team.name_cn || team.name}</div>
@@ -548,10 +547,13 @@ function selectTeamByAbbr(position, team, allTeams) {
     const container = document.getElementById(`${position}-team-selector`);
     const input = container.querySelector('.team-selector-input');
     const dropdown = container.querySelector('.team-selector-dropdown');
+    const logoUrl = team.logo_url || getTeamLogo(team.abbr);
     
     input.innerHTML = `
         <div class="team-selected">
-            <div class="team-option-logo">${team.abbr}</div>
+            <div class="team-option-logo">
+                <img src="${logoUrl}" alt="${team.abbr}" class="team-logo-option">
+            </div>
             <span>${team.name}</span>
         </div>
         <i class="fas fa-chevron-down"></i>
@@ -567,8 +569,7 @@ function updateTeamPreview(position, team) {
         const logoUrl = team.logo_url_large || team.logo_url || getTeamLogoLarge(team.abbr);
         preview.innerHTML = `
             <div class="team-logo">
-                <img src="${logoUrl}" alt="${team.abbr}" class="team-logo-preview"
-                     onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\"background: linear-gradient(135deg, #1D428A, #2E5BAA); width:100%; height:100%; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; color:white;\">${team.abbr}</div>';">
+                <img src="${logoUrl}" alt="${team.abbr}" class="team-logo-preview">
             </div>
             <div class="team-name">${team.name_cn || team.name}</div>
             <div class="team-city">${team.city}</div>
